@@ -3,9 +3,10 @@
  * CreatedAt: 2019-06-22
  */
 fn main() {
-    let v = vec![5, 2, 1];
+    let v = vec![5, 2, 7, 1, 3];
     println!("vec: {:?}", v);
     println!("mean: {}", mean(&v));
+    println!("median: {}", median(&v));
 }
 // 平均
 fn mean(v: &Vec<i32>) -> f64 {
@@ -23,8 +24,13 @@ fn mean(v: &Vec<i32>) -> f64 {
 }
 // ソート時の中央値
 fn median(v: &Vec<i32>) -> i32 {
-    v.sort(); // error[E0596]: cannot borrow immutable borrowed content `*v` as mutable
-    0
+//    v.sort(); // error[E0596]: cannot borrow immutable borrowed content `*v` as mutable
+//    let mut s = v; // error[E0596]: cannot borrow immutable borrowed content `*s` as mutable
+//    s.sort();
+    let mut s = Vec::new();
+    for i in v { s.push(i); }
+    s.sort();
+    **s.get(s.len()/2).unwrap()
 }
 // 頻出値
 fn mode(v: &Vec<i32>) -> i32 {
