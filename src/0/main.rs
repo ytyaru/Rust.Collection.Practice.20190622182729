@@ -3,10 +3,11 @@
  * CreatedAt: 2019-06-22
  */
 fn main() {
-    let v = vec![5, 2, 7, 1, 3];
+    let v = vec![5, 2, 7, 1, 3, 2, 9];
     println!("vec: {:?}", v);
     println!("mean: {}", mean(&v));
     println!("median: {}", median(&v));
+    println!("mode: {}", mode(&v));
 }
 // 平均
 fn mean(v: &Vec<i32>) -> f64 {
@@ -34,6 +35,18 @@ fn median(v: &Vec<i32>) -> i32 {
 }
 // 頻出値
 fn mode(v: &Vec<i32>) -> i32 {
-    0
+    use std::collections::HashMap;
+    let mut h = HashMap::new();
+    for i in v {
+        let count = h.entry(i).or_insert(0);
+        *count += 1;
+    }
+    let mut mode = 0;
+    let mut max_count = 0;
+    for (key, value) in h {
+//        println!("{} {}", key, value);
+        if max_count < value { max_count = value; mode = *key; }
+    }
+    mode
 }
 
