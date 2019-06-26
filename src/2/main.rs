@@ -26,17 +26,12 @@ fn analize_command(s: &str, employees: &mut HashMap<String, Vec<String>>) -> boo
     let commands: Vec<&str> = s.trim().split(' ').collect();
     match commands[0] {
         "quit" => false,
-        "add" if 3 == commands.len() => {
-//            add_employee(&mut employees, commands[1], commands[2]); // error[E0596]: cannot borrow immutable argument `employees` as mutable
+        "add" if 2 < commands.len() => {
             add_employee(employees, commands[1], commands[2]);
-//            employees.entry(String::from(commands[1])).or_insert(Vec::new());
-//            employees.get_mut(commands[1]).unwrap().push(String::from(commands[2]));
             true
         },
-        "list" => {
-            println!("{:?}", employees);
-            true
-        },
+        "list" if 1 == commands.len() => { println!("{:?}", employees); true },
+        "list" if 1 < commands.len() => { println!("{:?}", employees.get(commands[1])); true },
         _ => true,
     }
 }
@@ -44,3 +39,4 @@ fn add_employee(employees: &mut HashMap<String, Vec<String>>, department: &str, 
     employees.entry(department.to_string()).or_insert(Vec::new());
     employees.get_mut(department).unwrap().push(employee.to_string());
 }
+
