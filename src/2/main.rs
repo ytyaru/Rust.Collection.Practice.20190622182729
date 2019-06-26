@@ -10,10 +10,9 @@ use std::io::Write;
  * q
  */
 fn main() {
+    let mut employees: HashMap<String, Vec<String>> = HashMap::new();
     loop {
         let mut s = String::new();
-        let mut employees: HashMap<String, Vec<String>> = HashMap::new();
-//    Department // Sales, PublicRelations, Developments
 
         println!("コマンド: quit, add 部署名 従業員名, list [部署名]");
         print!("> ");
@@ -27,53 +26,21 @@ fn analize_command(s: &str, employees: &mut HashMap<String, Vec<String>>) -> boo
     let commands: Vec<&str> = s.trim().split(' ').collect();
     match commands[0] {
         "quit" => false,
-//        "add" => add_employee(commands[1..]),
-//        "add" if 3 == commands.len() => add_employee(commands[1], commands[2]),
         "add" if 3 == commands.len() => {
-            let v = employees.entry(String::from(commands[1])).or_insert(Vec::new());
-//            let _: () = v;
-//            (*v).push(String::from(commands[1]));
-            v.push(String::from(commands[2]));
-            println!("{:?}", v);
-//            employees[commands[1]].push(String::from(commands[2])); // error[E0596]: cannot borrow immutable indexed content as mutable
-//            employees[String::from(commands[1])].push(String::from(commands[2])); // error[E0308]: mismatched types
-//            employees.get(commands[1]).push(String::from(commands[2])); // error[E0596]: cannot borrow immutable indexed content as mutable
+//            add_employee(&mut employees, commands[1], commands[2]); // error[E0596]: cannot borrow immutable argument `employees` as mutable
+            add_employee(employees, commands[1], commands[2]);
+//            employees.entry(String::from(commands[1])).or_insert(Vec::new());
+//            employees.get_mut(commands[1]).unwrap().push(String::from(commands[2]));
             true
-
-/*
-//            let mut v = vec![String::from(commands[2])];
-            let mut v = Vec::new();
-            let emps = employees.entry(String::from(commands[1])).or_insert(v);
-//            let emps = employees.entry(String::from(commands[1])).or_insert(Vec::new());
-//            emps.push(String::from(commands[2]));
-            emps.push(String::from(commands[2]));
-//            let mut v = Vec::new();
-//            v.push(String::from(commands[2]));
-
-//            employees.insert(String::from(commands[1]), v);
-//            println!("{:?}", employees);
-//            println!("{:?}", *employees);
-            println!("{:?}", *emps);
-            true
-            */
         },
         "list" => {
-            println!("{:?}", *employees);
+            println!("{:?}", employees);
             true
         },
         _ => true,
     }
-    /*
-    match s {
-        "quit" => false,
-        _ => true,
-    }
-    */
 }
-fn add_employee(department: &str, name: &str) {
-    
+fn add_employee(employees: &mut HashMap<String, Vec<String>>, department: &str, employee: &str) {
+    employees.entry(department.to_string()).or_insert(Vec::new());
+    employees.get_mut(department).unwrap().push(employee.to_string());
 }
-fn quit() {
-
-}
-
